@@ -6,7 +6,7 @@ First, create a repository in Stash for the target project.
 Next, initialize the project
 
     git init
-    git remote add build http://git.bvops.net/scm/com/generic-bootstrap.git
+    git remote add build http://git.bvops.net/scm/com/project-bootstrap.git
     git fetch build
     git merge build/master
 
