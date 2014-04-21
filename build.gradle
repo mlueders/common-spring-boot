@@ -5,6 +5,9 @@ buildscript {
 apply plugin: 'bancvue-internal'
 apply plugin: 'ci'
 
+configurations {
+	all*.exclude module:'slf4j-simple'
+}
 
 dependencies {
 
@@ -21,4 +24,9 @@ dependencies {
 	testCompile('org.spockframework:spock-unitils:0.7-groovy-2.0') {
 		exclude group: 'org.codehaus.groovy'
 	}
+
+	testCompile("org.spockframework:spock-spring:0.7-groovy-2.0") {
+		exclude group: "org.codehaus.groovy"
+	}
+	testCompile "org.springframework:spring-test:4.0.1.RELEASE"
 }
