@@ -1,7 +1,8 @@
 package com.bancvue.cm.spring
+
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.ConfigurableApplicationContext
-import org.springframework.core.env.MutablePropertySources
+import org.springframework.core.env.PropertySources
 import org.springframework.test.context.ContextConfiguration
 import spock.lang.Specification
 
@@ -21,7 +22,7 @@ class PropertySourceInitializerComponentSpec extends Specification {
 	def "property source should be registered in environment"() {
 
 		when:
-		MutablePropertySources propertySources = context.getEnvironment().getPropertySources()
+		PropertySources propertySources = context.getEnvironment().getPropertySources()
 
 		then:
 		propertySources.contains("bvprops")
