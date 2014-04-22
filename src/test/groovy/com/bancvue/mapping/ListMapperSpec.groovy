@@ -4,19 +4,19 @@ import org.dozer.DozerBeanMapper
 import org.dozer.Mapper
 import spock.lang.Specification
 
-public class OrigType {
-	String foo
-	String bar
-	String extra
-}
-
-public class NewType {
-	String foo
-	String bar
-}
-
 
 class ListMapperSpec extends Specification {
+
+	public class OrigType {
+		String foo
+		String bar
+		String extra
+	}
+
+	public class NewType {
+		String foo
+		String bar
+	}
 
 	Mapper mapper
 
