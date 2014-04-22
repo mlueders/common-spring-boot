@@ -7,13 +7,13 @@ import spock.lang.Specification
 
 class ListMapperSpec extends Specification {
 
-	public class OrigType {
+	static class OrigType {
 		String foo
 		String bar
 		String extra
 	}
 
-	public class NewType {
+	static class NewType {
 		String foo
 		String bar
 	}
@@ -24,14 +24,14 @@ class ListMapperSpec extends Specification {
 		mapper = Mock(DozerBeanMapper)
 	}
 
-	def "should map original list to list of given type"() {
+	def "should call mapper for each element in original list"() {
 		given:
 		List<OrigType> originalList = new ArrayList()
 		originalList.add(new OrigType([foo:"1", bar:"2", extra:"3"]))
 		originalList.add(new OrigType([foo:"a", bar:"b", extra:"c"]))
 
 		def newTypes = [new NewType([foo:"1", bar:"2"]), new NewType([foo:"a", bar:"b"])]
-		mapper.map(_, _) >>> newTypes
+		2 * mapper.map(_, _) >>> newTypes
 
 		when:
 		List<NewType> newList = ListMapper.map(mapper, originalList, NewType.class)
