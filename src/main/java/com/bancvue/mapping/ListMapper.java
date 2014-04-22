@@ -1,4 +1,4 @@
-package com.bancvue.service.mapping;
+package com.bancvue.mapping;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Iterables;

@@ -1,4 +1,4 @@
-package com.bancvue.service.mapping
+package com.bancvue.mapping
 
 import org.dozer.DozerBeanMapper
 import org.dozer.Mapper

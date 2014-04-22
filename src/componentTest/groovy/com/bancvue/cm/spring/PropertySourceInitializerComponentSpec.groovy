@@ -25,6 +25,6 @@ class PropertySourceInitializerComponentSpec extends Specification {
 		PropertySources propertySources = context.getEnvironment().getPropertySources()
 
 		then:
-		propertySources.contains("bvprops")
+		propertySources.contains(BVPropertiesPropertySource.DEFAULT_PROPERTY_SOURCE_NAME)
 	}
 }

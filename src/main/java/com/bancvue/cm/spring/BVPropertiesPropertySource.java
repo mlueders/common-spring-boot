@@ -5,6 +5,7 @@ import org.springframework.core.env.PropertySource;
 
 public class BVPropertiesPropertySource extends PropertySource {
 
+	private static final String DEFAULT_PROPERTY_SOURCE_NAME = "bvprops";
 	private BVProperties bvProperties;
 
 	public BVPropertiesPropertySource(String name) {
@@ -13,7 +14,7 @@ public class BVPropertiesPropertySource extends PropertySource {
 	}
 
 	public BVPropertiesPropertySource() {
-		this("bvprops");
+		this(DEFAULT_PROPERTY_SOURCE_NAME);
 	}
 
 	@Override
