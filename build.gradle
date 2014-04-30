@@ -39,14 +39,6 @@ dependencies {
 	testCompile "org.springframework:spring-test:4.0.1.RELEASE"
 }
 
-
-publishing {
-	publications {
-		commonspringboot(MavenPublication) {
-			artifact jarMainTest {
-				classifier 'test'
-				extension 'jar'
-			}
-		}
-	}
+publishing_ext {
+	publication('mainTest')
 }
