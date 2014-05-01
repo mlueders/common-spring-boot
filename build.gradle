@@ -20,6 +20,9 @@ dependencies {
 	mainTestCompile 'org.codehaus.groovy:groovy-all:2.1.2'
 	mainTestCompile 'org.liquibase:liquibase-core:3.1.1'
 	mainTestCompile 'org.glassfish.jersey.core:jersey-server:2.7'
+	mainTestCompile 'org.springframework.boot:spring-boot:1.0.0.RELEASE'
+	mainTestCompile "org.springframework:spring-test:4.0.1.RELEASE"
+
 	testCompile('org.spockframework:spock-unitils:0.7-groovy-2.0') {
 		exclude group: 'org.codehaus.groovy'
 	}
@@ -36,7 +39,6 @@ dependencies {
 	testCompile("org.spockframework:spock-spring:0.7-groovy-2.0") {
 		exclude group: "org.codehaus.groovy"
 	}
-	testCompile "org.springframework:spring-test:4.0.1.RELEASE"
 }
 
 publishing_ext {
