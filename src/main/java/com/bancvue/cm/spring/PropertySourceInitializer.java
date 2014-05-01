@@ -9,6 +9,6 @@ public class PropertySourceInitializer implements ApplicationContextInitializer<
 	@Override
 	public void initialize(ConfigurableApplicationContext applicationContext) {
 		PropertySource bvPropertySource = new BVPropertiesPropertySource();
-		applicationContext.getEnvironment().getPropertySources().addLast(bvPropertySource);
+		applicationContext.getEnvironment().getPropertySources().addFirst(bvPropertySource);
 	}
 }
