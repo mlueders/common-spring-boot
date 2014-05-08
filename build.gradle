@@ -10,17 +10,18 @@ configurations {
 }
 
 dependencies {
+	compile 'org.springframework.boot:spring-boot-starter-jdbc:1.0.0.RELEASE'
 	compile 'org.springframework:spring-context:4.0.3.RELEASE'
 	compile 'org.springframework:spring-web:4.0.3.RELEASE'
 	compile 'com.bancvue:configuration-management:1.+'
+	compile 'org.liquibase:liquibase-core:3.1.1'
+	compile 'org.projectlombok:lombok:1.12.2'
 	compile('net.sf.dozer:dozer:5.4.0') {
 		exclude group: 'org.slf4j'
 	}
 
 	mainTestCompile 'org.codehaus.groovy:groovy-all:2.1.2'
-	mainTestCompile 'org.liquibase:liquibase-core:3.1.1'
 	mainTestCompile 'org.glassfish.jersey.core:jersey-server:2.7'
-	mainTestCompile 'org.springframework.boot:spring-boot:1.0.0.RELEASE'
 	mainTestCompile "org.springframework:spring-test:4.0.1.RELEASE"
 
 	testCompile('org.spockframework:spock-unitils:0.7-groovy-2.0') {
