@@ -2,6 +2,7 @@ package com.bancvue.testsupport
 
 import liquibase.Liquibase
 import liquibase.database.Database
+import liquibase.database.DatabaseFactory
 import liquibase.database.jvm.JdbcConnection
 import liquibase.exception.DatabaseException
 import liquibase.exception.LiquibaseException
@@ -18,7 +19,7 @@ class LiquibaseTestSupport {
 	public LiquibaseTestSupport(String fileName, ResourceAccessor resourceAccessor, DataSource dataSource) {
 		try {
 			Connection conn = dataSource.getConnection();
-			Database database = liquibase.database.DatabaseFactory.getInstance()
+			Database database = DatabaseFactory.getInstance()
 					.findCorrectDatabaseImplementation(new JdbcConnection(conn));
 			liquibase = new Liquibase(fileName, resourceAccessor, database);
 		} catch (SQLException e) {
