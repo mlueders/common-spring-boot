@@ -24,11 +24,11 @@ public class BVSpringApplication {
 		SpringApplication app;
 
 		if (Arrays.asList(args).contains("db")) {
-			log.debug("Starting liquibase operation");
+			log.info("Starting liquibase operation");
 			app = new SpringApplication(LiquibaseOperation.class);
 			app.setWebEnvironment(false);
 		} else {
-			log.debug("Starting application");
+			log.info("Starting application");
 			app = new SpringApplication(applicationClass);
 		}
 
