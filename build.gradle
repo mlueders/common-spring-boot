@@ -1,5 +1,5 @@
 buildscript {
-	dependencies { classpath 'com.bancvue:gradle-internal:1.45' }
+	dependencies { classpath 'com.bancvue:gradle-internal:2.+' }
 }
 
 apply plugin: 'bancvue-internal'
@@ -23,13 +23,6 @@ dependencies {
 	mainTestCompile 'org.codehaus.groovy:groovy-all:2.1.2'
 	mainTestCompile 'org.glassfish.jersey.core:jersey-server:2.7'
 	mainTestCompile "org.springframework:spring-test:4.0.1.RELEASE"
-
-	testCompile('org.spockframework:spock-unitils:0.7-groovy-2.0') {
-		exclude group: 'org.codehaus.groovy'
-	}
-	testCompile("org.spockframework:spock-spring:0.7-groovy-2.0") {
-		exclude group: "org.codehaus.groovy"
-	}
 
 	testCompile 'org.codehaus.groovy:groovy-all:2.1.2'
 	testCompile 'cglib:cglib-nodep:2.2.2'
