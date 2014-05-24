@@ -5,8 +5,24 @@ buildscript {
 apply plugin: 'bancvue-internal'
 apply plugin: 'ci'
 
+
 configurations {
+	restCompile.extendsFrom(compile)
+	restRuntime.extendsFrom(runtime)
+
 	all*.exclude module: 'slf4j-simple'
+}
+
+sourceSets {
+	rest {
+		compileClasspath = main.output + configurations.restCompile
+		runtimeClasspath = rest.output + main.output + configurations.restRuntime
+
+		java {
+			srcDir "src/main/java"
+			srcDir "src/rest/java"
+		}
+	}
 }
 
 dependencies {
@@ -19,6 +35,8 @@ dependencies {
 	compile('net.sf.dozer:dozer:5.4.0') {
 		exclude group: 'org.slf4j'
 	}
+
+	restCompile "com.bancvue:common-rest:1.+"
 
 	mainTestCompile 'org.codehaus.groovy:groovy-all:2.1.2'
 	mainTestCompile 'org.glassfish.jersey.core:jersey-server:2.7'
@@ -35,6 +53,13 @@ dependencies {
 	}
 }
 
+idea {
+	module {
+		scopes.COMPILE.plus += configurations.restCompile
+	}
+}
+
 publishing_ext {
+	publication('rest')
 	publication('mainTest')
 }
