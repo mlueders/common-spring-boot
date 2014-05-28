@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Scope
 import org.springframework.stereotype.Component
+import org.springframework.web.context.WebApplicationContext
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext
 import spock.lang.Specification
 import spock.lang.Unroll
@@ -39,7 +40,7 @@ class AbstractResourceTest extends Specification {
 			new ResourceWithNoComponentAnnotation();
 		}
 
-		@Scope("request")
+		@Scope(WebApplicationContext.SCOPE_REQUEST)
 		public static class ResourceWithNoComponentAnnotation extends AbstractResource {}
 	}
 
@@ -62,6 +63,7 @@ class AbstractResourceTest extends Specification {
 		}
 
 		@Component
+		@Scope(WebApplicationContext.SCOPE_SESSION)
 		public static class ResourceWithScopeAnnotationOtherThanRequest extends AbstractResource {}
 
 	}

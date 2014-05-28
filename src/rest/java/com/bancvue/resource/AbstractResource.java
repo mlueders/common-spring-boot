@@ -58,7 +58,7 @@ public class AbstractResource {
 	private void assertResourceAnnotatedWithRequestScope() {
 		Scope scope = getClass().getAnnotation(Scope.class);
 		if ((scope == null) || !WebApplicationContext.SCOPE_REQUEST.equals(scope.value())) {
-			throw new IllegalStateException("REST resource must be annotated with @Scope(\"request\")");
+			throw new IllegalStateException("REST resource must be annotated with @Scope(WebApplicationContext.SCOPE_REQUEST)");
 		}
 	}
 
