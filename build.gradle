@@ -51,6 +51,7 @@ dependencies {
 	testCompile("org.spockframework:spock-spring:0.7-groovy-2.0") {
 		exclude group: "org.codehaus.groovy"
 	}
+	testCompile 'javax.servlet:javax.servlet-api:3.0.1'
 }
 
 idea {
