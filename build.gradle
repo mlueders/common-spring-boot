@@ -34,22 +34,35 @@ sourceSets {
 }
 
 
+String springBootVersion = '1.0.2.RELEASE'
+String jerseyVersion = '2.7'
+
 dependencies {
-	compile 'org.springframework.boot:spring-boot-starter-jdbc:1.0.0.RELEASE'
-	compile 'org.springframework:spring-context:4.0.3.RELEASE'
-	compile 'org.springframework:spring-web:4.0.3.RELEASE'
+	compile "org.springframework.boot:spring-boot:${springBootVersion}"
+	compile "org.springframework.boot:spring-boot-starter:${springBootVersion}"
+	compile "org.springframework.boot:spring-boot-starter-data-jpa:${springBootVersion}"
 	compile 'com.bancvue:configuration-management:1.+'
 	compile 'org.liquibase:liquibase-core:3.1.1'
+	// Fix liquibase logging
+	compile 'com.mattbertolini:liquibase-slf4j:1.2.1'
 	compile 'org.projectlombok:lombok:1.12.2'
 	compile('net.sf.dozer:dozer:5.4.0') {
 		exclude group: 'org.slf4j'
 	}
 
+	restCompile "org.springframework.boot:spring-boot-starter-web:${springBootVersion}"
+	restCompile "org.springframework.boot:spring-boot-starter-actuator:${springBootVersion}"
+	restCompile "org.glassfish.jersey.core:jersey-server:${jerseyVersion}"
+	restCompile("org.glassfish.jersey.ext:jersey-spring3:${jerseyVersion}") {
+		exclude group: "junit"
+	}
+	restCompile "org.glassfish.jersey.ext:jersey-bean-validation:${jerseyVersion}"
+	restCompile "org.hibernate:hibernate-validator:5.0.2.Final"
 	restCompile "com.bancvue:common-rest:1.+"
 
 	mainTestCompile 'org.codehaus.groovy:groovy-all:2.1.2'
 	mainTestCompile 'org.glassfish.jersey.core:jersey-server:2.7'
-	mainTestCompile "org.springframework:spring-test:4.0.1.RELEASE"
+	mainTestCompile "org.springframework:spring-test:4.0.3.RELEASE"
 
 	testCompile 'org.codehaus.groovy:groovy-all:2.1.2'
 	testCompile 'cglib:cglib-nodep:2.2.2'
@@ -60,7 +73,6 @@ dependencies {
 	testCompile("org.spockframework:spock-spring:0.7-groovy-2.0") {
 		exclude group: "org.codehaus.groovy"
 	}
-	testCompile 'javax.servlet:javax.servlet-api:3.0.1'
 }
 
 idea {
