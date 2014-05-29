@@ -23,7 +23,16 @@ sourceSets {
 			srcDir "src/rest/java"
 		}
 	}
+	test {
+		compileClasspath += rest.output + rest.compileClasspath
+		runtimeClasspath += rest.output + rest.runtimeClasspath
+	}
+	componentTest {
+		compileClasspath += rest.output + rest.compileClasspath
+		runtimeClasspath += rest.output + rest.runtimeClasspath
+	}
 }
+
 
 dependencies {
 	compile 'org.springframework.boot:spring-boot-starter-jdbc:1.0.0.RELEASE'
