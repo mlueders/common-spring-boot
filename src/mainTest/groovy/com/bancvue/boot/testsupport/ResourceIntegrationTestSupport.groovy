@@ -34,7 +34,12 @@ class ResourceIntegrationTestSupport {
 		resource = httpClient.target("http://localhost:" + port + "/")
 	}
 
+	public String getUriAsString() {
+		resource.uri.toString()
+	}
+
 	public close() {
 		httpClient.close()
 	}
+
 }
