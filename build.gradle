@@ -41,7 +41,7 @@ dependencies {
 	compile "org.springframework.boot:spring-boot:${springBootVersion}"
 	compile "org.springframework.boot:spring-boot-starter:${springBootVersion}"
 	compile "org.springframework.boot:spring-boot-starter-data-jpa:${springBootVersion}"
-	compile 'com.bancvue:configuration-management:1.+'
+	compile 'com.bancvue:common-config:2.+'
 	compile 'org.liquibase:liquibase-core:3.1.1'
 	// Fix liquibase logging
 	compile 'com.mattbertolini:liquibase-slf4j:1.2.1'
@@ -64,6 +64,7 @@ dependencies {
 	mainTestCompile 'org.glassfish.jersey.core:jersey-server:2.7'
 	mainTestCompile "org.springframework:spring-test:4.0.3.RELEASE"
 	mainTestCompile 'org.fluttercode.datafactory:datafactory:0.8'
+	mainTestCompile 'com.bancvue:common-config-test:2.+'
 
 	testCompile 'org.codehaus.groovy:groovy-all:2.1.2'
 	testCompile 'cglib:cglib-nodep:2.2.2'
