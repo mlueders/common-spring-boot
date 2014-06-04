@@ -79,6 +79,7 @@ dependencies {
 
 idea {
 	module {
+		sourceDirs += file('src/rest/java')
 		scopes.COMPILE.plus += configurations.restCompile
 	}
 }
