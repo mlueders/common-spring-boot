@@ -1,5 +1,6 @@
 package com.bancvue.boot.resource;
 
+import com.bancvue.boot.config.RequestScopedJerseyContext;
 import com.bancvue.rest.resource.ResourceResponseFactory;
 import java.lang.annotation.Annotation;
 import javax.annotation.PostConstruct;
@@ -8,30 +9,32 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.UriInfo;
-import org.springframework.context.annotation.Scope;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.web.context.WebApplicationContext;
 
 
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class AbstractResource {
 
+	@Autowired
+	private RequestScopedJerseyContext requestScopedJerseyContext;
+
 	protected ResourceResponseFactory resourceResponseFactory;
 
+	/**
+	 * The UriInfo is set by jersey per-request.  The spring request-scoped context is used to store the UriInfo
+	 * in a thread(request)-safe manner.  Non-obvious, but functional.
+	 */
 	@Context
 	public void setUriInfo(UriInfo uriInfo) {
-		if (resourceResponseFactory != null) {
-			// should never happen since we're ensuring @Scope("request") on post-construct but extra validation doesn't hurt
-			throw new RuntimeException("Attempting to re-initialize ResourceResponseFactory");
-		}
-		resourceResponseFactory = new ResourceResponseFactory(this.getClass(), uriInfo);
+		requestScopedJerseyContext.setUriInfo(uriInfo);
 	}
 
 	@PostConstruct
-	private void assertRequiredAnnotationsPresent() {
+	private void postConstruct() {
 		assertResourceAnnotatedWithComponent();
-		assertResourceAnnotatedWithRequestScope();
+		resourceResponseFactory = new ResourceResponseFactory(this.getClass(), requestScopedJerseyContext);
 	}
 
 	/**
@@ -48,18 +51,6 @@ public class AbstractResource {
 			throw new IllegalStateException("REST resource must be annotated with @" + annotationType.getName());
 		}
 		return annotation;
-	}
-
-	/**
-	 * The resource needs to be annotated with @Scope("request") b/c setUriInfo will be called by Jersey on each
-	 * request, even if the bean is singleton scope.  This could lead to interesting and hard-to-detect defects
-	 * since the UriInfo (and corresponding resourceResponseFactory) could be changing mid-request.
-	 */
-	private void assertResourceAnnotatedWithRequestScope() {
-		Scope scope = getClass().getAnnotation(Scope.class);
-		if ((scope == null) || !WebApplicationContext.SCOPE_REQUEST.equals(scope.value())) {
-			throw new IllegalStateException("REST resource must be annotated with @Scope(WebApplicationContext.SCOPE_REQUEST)");
-		}
 	}
 
 }

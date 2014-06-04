@@ -45,6 +45,11 @@ public class JerseyServiceConfiguration {
 		return new DozerBeanMapper();
 	}
 
+	@Bean
+	RequestScopedJerseyContext getRequestScopedJerseyContext() {
+		return new RequestScopedJerseyContext();
+	}
+
 	private static String findApplicationPath(ApplicationPath annotation) {
 		// Jersey doesn't like to be the default servlet, so map to /* as a fallback
 		if (annotation == null) {
@@ -53,5 +58,6 @@ public class JerseyServiceConfiguration {
 		String path = annotation.value();
 		return path.isEmpty() || path.equals("/") ? "/*" : path + "/*";
 	}
+
 }
 
