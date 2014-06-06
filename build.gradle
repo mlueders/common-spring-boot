@@ -9,6 +9,7 @@ apply plugin: 'ci'
 configurations {
 	restCompile.extendsFrom(compile)
 	restRuntime.extendsFrom(runtime)
+	restClientRuntime
 
 	all*.exclude module: 'slf4j-simple'
 }
@@ -60,6 +61,8 @@ dependencies {
 	restCompile "org.hibernate:hibernate-validator:5.0.2.Final"
 	restCompile "com.bancvue:common-rest:1.+"
 
+	restClientRuntime "com.bancvue:common-rest:1.+"
+
 	mainTestCompile 'org.codehaus.groovy:groovy-all:2.1.2'
 	mainTestCompile 'org.glassfish.jersey.core:jersey-server:2.7'
 	mainTestCompile "org.springframework:spring-test:4.0.3.RELEASE"
@@ -85,5 +88,6 @@ idea {
 
 publishing_ext {
 	publication('rest')
+	publication('restClient')
 	publication('mainTest')
 }
