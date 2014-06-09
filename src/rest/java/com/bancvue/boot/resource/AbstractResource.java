@@ -1,6 +1,7 @@
 package com.bancvue.boot.resource;
 
 import com.bancvue.boot.config.RequestScopedJerseyContext;
+import com.bancvue.rest.Envelope;
 import com.bancvue.rest.resource.ResourceResponseFactory;
 import java.lang.annotation.Annotation;
 import javax.annotation.PostConstruct;
@@ -53,4 +54,11 @@ public class AbstractResource {
 		return annotation;
 	}
 
+	protected static String pathFor(Long id) {
+		return "/" + id;
+	}
+
+	protected static <T> Envelope<T> envelope(T entity) {
+		return new Envelope.Builder<>(entity).build();
+	}
 }
