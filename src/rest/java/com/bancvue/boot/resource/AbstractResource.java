@@ -1,5 +1,6 @@
 package com.bancvue.boot.resource;
 
+import com.bancvue.boot.api.ApiEntity;
 import com.bancvue.boot.config.RequestScopedJerseyContext;
 import com.bancvue.rest.Envelope;
 import com.bancvue.rest.resource.ResourceResponseFactory;
@@ -56,6 +57,10 @@ public abstract class AbstractResource {
 
 	protected static String pathFor(Long id) {
 		return "/" + id;
+	}
+
+	protected static String pathFor(ApiEntity entity) {
+		return pathFor(entity.getId());
 	}
 
 	protected static <T> Envelope<T> envelope(T entity) {
