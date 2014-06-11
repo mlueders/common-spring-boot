@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
 
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
-public class AbstractResource {
+public abstract class AbstractResource {
 
 	@Autowired
 	private RequestScopedJerseyContext requestScopedJerseyContext;
