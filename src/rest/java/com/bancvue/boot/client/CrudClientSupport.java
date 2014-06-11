@@ -59,7 +59,7 @@ public class CrudClientSupport<T extends ApiEntity> {
 	}
 
 	public T insertWithPost(T entity) {
-		CreateResponse response = clientResponseFactory.createWithPost(path(entity), entity);
+		CreateResponse response = clientResponseFactory.createWithPost(resource, entity);
 		return response.assertEntityCreatedAndGetResponse(entityEnvelope).getData();
 	}
 
