@@ -9,6 +9,7 @@ apply plugin: 'ci'
 configurations {
 	restCompile.extendsFrom(compile)
 	restRuntime.extendsFrom(runtime)
+	restClientCompile
 	restClientRuntime
 
 	all*.exclude module: 'slf4j-simple'
@@ -22,6 +23,17 @@ sourceSets {
 		java {
 			srcDir "src/main/java"
 			srcDir "src/rest/java"
+		}
+	}
+	restClient {
+		compileClasspath = configurations.restClientCompile
+		runtimeClasspath = restClient.output + configurations.restClientRuntime
+
+		java {
+			srcDir "src/main/java"
+			srcDir "src/rest/java"
+			include "com/bancvue/boot/client/**"
+			include "com/bancvue/boot/api/**"
 		}
 	}
 	test {
@@ -61,7 +73,7 @@ dependencies {
 	restCompile "org.hibernate:hibernate-validator:5.0.2.Final"
 	restCompile "com.bancvue:common-rest:1.+"
 
-	restClientRuntime "com.bancvue:common-rest:1.+"
+	restClientCompile "com.bancvue:common-rest:1.+"
 
 	mainTestCompile 'org.codehaus.groovy:groovy-all:2.1.2'
 	mainTestCompile 'org.glassfish.jersey.core:jersey-server:2.7'
