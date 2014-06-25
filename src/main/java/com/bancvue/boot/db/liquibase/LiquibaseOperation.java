@@ -54,7 +54,6 @@ public class LiquibaseOperation implements CommandLineRunner {
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
-
 	}
 
 
