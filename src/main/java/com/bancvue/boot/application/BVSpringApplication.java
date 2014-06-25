@@ -5,6 +5,7 @@ import com.bancvue.boot.db.liquibase.LiquibaseOperation;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
+import org.springframework.context.ConfigurableApplicationContext;
 
 import java.util.Arrays;
 
@@ -20,7 +21,7 @@ public class BVSpringApplication {
 		this.applicationClass = applicationClass;
 	}
 
-	public void run(String[] args) {
+	public ConfigurableApplicationContext run(String[] args) {
 		SpringApplication app;
 
 		if (Arrays.asList(args).contains("db")) {
@@ -34,7 +35,6 @@ public class BVSpringApplication {
 
 		app.setShowBanner(showBanner);
 		app.addInitializers(new PropertySourceInitializer());
-		app.run(args);
-
+		return app.run(args);
 	}
 }
