@@ -12,13 +12,13 @@ import org.springframework.core.annotation.AnnotationUtils;
 import javax.annotation.PostConstruct;
 import javax.ws.rs.ApplicationPath;
 
-public class JerseyServiceConfiguration {
+public class JerseyServiceConfig {
 
 	private String jerseyServletContextRoot;
 
 	private Class jerseyResourceConfigClass;
 
-	public JerseyServiceConfiguration(Class jerseyResourceConfigClass) {
+	public JerseyServiceConfig(Class jerseyResourceConfigClass) {
 		this.jerseyResourceConfigClass = jerseyResourceConfigClass;
 	}
 
