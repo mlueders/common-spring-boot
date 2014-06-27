@@ -3,6 +3,7 @@ package com.bancvue.boot.resource;
 import com.bancvue.boot.api.ApiEntity;
 import com.bancvue.boot.config.RequestScopedJerseyContext;
 import com.bancvue.rest.Envelope;
+import com.bancvue.rest.params.LongParam;
 import com.bancvue.rest.resource.ResourceResponseFactory;
 import java.lang.annotation.Annotation;
 import javax.annotation.PostConstruct;
@@ -57,6 +58,10 @@ public abstract class AbstractResource {
 
 	protected static String pathFor(Long id) {
 		return "/" + id;
+	}
+
+	protected static String pathFor(LongParam id) {
+		return pathFor(id.get());
 	}
 
 	protected static String pathFor(ApiEntity entity) {
