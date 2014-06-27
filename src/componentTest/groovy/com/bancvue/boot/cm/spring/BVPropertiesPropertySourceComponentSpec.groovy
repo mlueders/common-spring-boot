@@ -1,12 +1,13 @@
 package com.bancvue.boot.cm.spring
 
+import com.bancvue.cm.BVConfiguration
 import spock.lang.Specification
 
 class BVPropertiesPropertySourceComponentSpec extends Specification {
 	BVPropertiesPropertySource propertySource
 
 	def setup() {
-		System.setProperty("bv.config", "src/componentTest/resources/componentTest.properties")
+		System.setProperty(BVConfiguration.CONFIG, "src/componentTest/resources/componentTest.properties")
 		propertySource = new BVPropertiesPropertySource()
 	}
 
