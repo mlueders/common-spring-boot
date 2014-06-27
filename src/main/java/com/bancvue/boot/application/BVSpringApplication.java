@@ -12,13 +12,13 @@ import java.util.Arrays;
 @Slf4j
 public class BVSpringApplication {
 
-	private Class applicationClass;
+	private Class[] applicationClasses;
 
 	@Setter
 	private boolean showBanner = false;
 
-	public BVSpringApplication(Class applicationClass) {
-		this.applicationClass = applicationClass;
+	public BVSpringApplication(Class... applicationClasses) {
+		this.applicationClasses = applicationClasses;
 	}
 
 	public ConfigurableApplicationContext run(String[] args) {
@@ -30,7 +30,7 @@ public class BVSpringApplication {
 			app.setWebEnvironment(false);
 		} else {
 			log.info("Starting application");
-			app = new SpringApplication(applicationClass);
+			app = new SpringApplication(applicationClasses);
 		}
 
 		app.setShowBanner(showBanner);
