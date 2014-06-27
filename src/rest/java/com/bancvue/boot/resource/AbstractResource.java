@@ -60,12 +60,24 @@ public abstract class AbstractResource {
 		return "/" + id;
 	}
 
+	protected static String pathFor(String prefix, Long id) {
+		return prefix + pathFor(id);
+	}
+
 	protected static String pathFor(LongParam id) {
 		return pathFor(id.get());
 	}
 
+	protected static String pathFor(String prefix, LongParam id) {
+		return prefix + pathFor(id);
+	}
+
 	protected static String pathFor(ApiEntity entity) {
 		return pathFor(entity.getId());
+	}
+
+	protected static String pathFor(String prefix, ApiEntity entity) {
+		return prefix + pathFor(entity);
 	}
 
 	protected static <T> Envelope<T> envelope(T entity) {
