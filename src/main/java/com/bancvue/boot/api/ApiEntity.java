@@ -1,7 +1,7 @@
 package com.bancvue.boot.api;
 
-public interface ApiEntity {
+public interface ApiEntity<T> {
 
-	public Long getId();
+	public T getId();
 
 }

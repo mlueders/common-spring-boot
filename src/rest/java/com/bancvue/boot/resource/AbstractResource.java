@@ -1,10 +1,6 @@
 package com.bancvue.boot.resource;
 
-import com.bancvue.boot.api.ApiEntity;
 import com.bancvue.boot.config.RequestScopedJerseyContext;
-import com.bancvue.rest.Envelope;
-import com.bancvue.rest.params.LongParam;
-import com.bancvue.rest.resource.ResourceResponseFactory;
 import java.lang.annotation.Annotation;
 import javax.annotation.PostConstruct;
 import javax.ws.rs.Consumes;
@@ -23,7 +19,7 @@ public abstract class AbstractResource {
 	@Autowired
 	private RequestScopedJerseyContext requestScopedJerseyContext;
 
-	protected ResourceResponseFactory resourceResponseFactory;
+	protected ApiEntityResponseFactory entityResponseFactory;
 
 	/**
 	 * The UriInfo is set by jersey per-request.  The spring request-scoped context is used to store the UriInfo
@@ -37,7 +33,7 @@ public abstract class AbstractResource {
 	@PostConstruct
 	private void postConstruct() {
 		assertResourceAnnotatedWithComponent();
-		resourceResponseFactory = new ResourceResponseFactory(this.getClass(), requestScopedJerseyContext);
+		entityResponseFactory = new ApiEntityResponseFactory(this.getClass(), requestScopedJerseyContext);
 	}
 
 	/**
@@ -56,31 +52,4 @@ public abstract class AbstractResource {
 		return annotation;
 	}
 
-	protected static String pathFor(Long id) {
-		return "/" + id;
-	}
-
-	protected static String pathFor(String prefix, Long id) {
-		return prefix + pathFor(id);
-	}
-
-	protected static String pathFor(LongParam id) {
-		return pathFor(id.get());
-	}
-
-	protected static String pathFor(String prefix, LongParam id) {
-		return prefix + pathFor(id);
-	}
-
-	protected static String pathFor(ApiEntity entity) {
-		return pathFor(entity.getId());
-	}
-
-	protected static String pathFor(String prefix, ApiEntity entity) {
-		return prefix + pathFor(entity);
-	}
-
-	protected static <T> Envelope<T> envelope(T entity) {
-		return new Envelope.Builder<>(entity).build();
-	}
 }
