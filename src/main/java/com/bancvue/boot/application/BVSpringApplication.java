@@ -30,7 +30,7 @@ public class BVSpringApplication {
 			app.setWebEnvironment(false);
 		} else {
 			log.info("Starting application");
-			app = new SpringApplication(applicationClasses);
+			app = new SpringApplication((Object[]) applicationClasses);
 		}
 
 		app.setShowBanner(showBanner);

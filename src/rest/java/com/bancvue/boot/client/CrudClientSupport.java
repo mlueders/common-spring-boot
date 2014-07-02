@@ -4,6 +4,7 @@ import com.bancvue.boot.api.ApiEntity;
 import com.bancvue.rest.Envelope;
 import com.bancvue.rest.client.ClientResponseFactory;
 import com.bancvue.rest.client.CreateResponse;
+import com.bancvue.rest.client.DeleteResponse;
 import com.bancvue.rest.client.GetResponse;
 import com.bancvue.rest.client.UpdateResponse;
 import java.util.List;
@@ -32,15 +33,23 @@ public class CrudClientSupport<T extends ApiEntity> {
 		return clientResponseFactory;
 	}
 
-	public WebTarget path(Long id) {
-		return resource.path(Long.toString(id));
+	public WebTarget path(Object id) {
+		if (id == null) {
+			throw new IllegalStateException("Id must not be null");
+		}
+
+		return resource.path(id.toString());
 	}
 
 	public WebTarget path(ApiEntity entity) {
+		if (entity == null) {
+			throw new IllegalStateException("Entity must not be null");
+		}
+
 		return path(entity.getId());
 	}
 
-	public T find(Long id) {
+	public T find(Object id) {
 		return find(path(id));
 	}
 
@@ -69,7 +78,8 @@ public class CrudClientSupport<T extends ApiEntity> {
 	}
 
 	public void delete(T entity) {
-		clientResponseFactory.delete(path(entity)).assertEntityDeletedAndGetResponse(String.class);
+		DeleteResponse response = clientResponseFactory.delete(path(entity));
+		response.assertEntityDeletedAndGetResponse(String.class);
 	}
 
 }
