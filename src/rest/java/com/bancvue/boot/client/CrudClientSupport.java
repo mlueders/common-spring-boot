@@ -77,8 +77,17 @@ public class CrudClientSupport<T extends ApiEntity> {
 		response.assertEntityUpdatedAndGetResponse(entityEnvelope).getData();
 	}
 
+	@Deprecated
 	public void delete(T entity) {
-		DeleteResponse response = clientResponseFactory.delete(path(entity));
+		delete(entity.getId());
+	}
+
+	public void delete(Object id) {
+		delete(path(id));
+	}
+
+	public void delete(WebTarget deleteResource) {
+		DeleteResponse response = clientResponseFactory.delete(deleteResource);
 		response.assertEntityDeletedAndGetResponse(String.class);
 	}
 
