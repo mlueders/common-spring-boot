@@ -72,9 +72,9 @@ public class CrudClientSupport<T extends ApiEntity> {
 		return response.assertEntityCreatedAndGetResponse(entityEnvelope).getData();
 	}
 
-	public void updateWithPut(T entity) {
+	public T updateWithPut(T entity) {
 		UpdateResponse response = clientResponseFactory.updateWithPut(path(entity), entity);
-		response.assertEntityUpdatedAndGetResponse(entityEnvelope).getData();
+		return response.assertEntityUpdatedAndGetResponse(entityEnvelope).getData();
 	}
 
 	@Deprecated
