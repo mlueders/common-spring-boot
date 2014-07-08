@@ -33,7 +33,12 @@ public class CrudClientSupport<T extends ApiEntity> {
 		return clientResponseFactory;
 	}
 
+	@Deprecated
 	public WebTarget path(Object id) {
+		return pathFor(id);
+	}
+
+	public WebTarget pathFor(Object id) {
 		if (id == null) {
 			throw new IllegalStateException("Id must not be null");
 		}
@@ -41,16 +46,21 @@ public class CrudClientSupport<T extends ApiEntity> {
 		return resource.path(id.toString());
 	}
 
+	@Deprecated
 	public WebTarget path(ApiEntity entity) {
+		return pathFor(entity);
+	}
+
+	public WebTarget pathFor(ApiEntity entity) {
 		if (entity == null) {
 			throw new IllegalStateException("Entity must not be null");
 		}
 
-		return path(entity.getId());
+		return pathFor(entity.getId());
 	}
 
 	public T find(Object id) {
-		return find(path(id));
+		return find(pathFor(id));
 	}
 
 	public T find(WebTarget findResource) {
@@ -83,7 +93,7 @@ public class CrudClientSupport<T extends ApiEntity> {
 	}
 
 	public void delete(Object id) {
-		delete(path(id));
+		delete(pathFor(id));
 	}
 
 	public void delete(WebTarget deleteResource) {
