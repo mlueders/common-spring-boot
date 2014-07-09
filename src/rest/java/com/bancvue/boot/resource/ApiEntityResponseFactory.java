@@ -114,11 +114,11 @@ public class ApiEntityResponseFactory {
 		return resourceResponseFactory.createNotFoundResponse();
 	}
 
-	@Deprecated
 	public Response createConflictResponse(ApiEntity entity) {
-		return createConflictResponse();
+		return resourceResponseFactory.createConflictResponse(envelope(entity));
 	}
 
+	@Deprecated
 	public Response createConflictResponse() {
 		return resourceResponseFactory.createConflictResponse();
 	}
