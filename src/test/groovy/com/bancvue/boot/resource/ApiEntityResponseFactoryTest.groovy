@@ -13,7 +13,7 @@ class ApiEntityResponseFactoryTest extends Specification {
 		responseFactory = new ApiEntityResponseFactory(Widget.class, uriInfoHolder);
 	}
 
-	def "createConflictResponse return a conflict status with no entity"() {
+	def "createConflictResponse should return a conflict status with no entity"() {
 		when:
 		Response response = responseFactory.createConflictResponse()
 
@@ -22,7 +22,7 @@ class ApiEntityResponseFactoryTest extends Specification {
 		response.entity == null
 	}
 
-	def "createConflictResponse with an entityshould a conflict status with an entity"() {
+	def "createConflictResponse with an entity should return a conflict status with an entity"() {
 		given:
 		Widget widget = new Widget()
 
