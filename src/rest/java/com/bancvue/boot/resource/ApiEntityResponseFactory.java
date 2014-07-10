@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import javax.ws.rs.core.Response;
 
+@Deprecated
 public class ApiEntityResponseFactory {
 
 	private String basePath;

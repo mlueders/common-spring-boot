@@ -11,7 +11,7 @@ import java.util.List;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.GenericType;
 
-public class CrudClientSupport<T extends ApiEntity> {
+public class CrudClientSupport<T> {
 
 	private WebTarget resource;
 	private ClientResponseFactory clientResponseFactory;
@@ -33,34 +33,32 @@ public class CrudClientSupport<T extends ApiEntity> {
 		return clientResponseFactory;
 	}
 
-	@Deprecated
-	public WebTarget path(Object id) {
-		return pathFor(id);
+	public CrudClientSupport<T> path(Object subpath) {
+		return new CrudClientSupport<>(pathFor(subpath), entityEnvelope, entityListEnvelope);
 	}
 
-	public WebTarget pathFor(Object id) {
-		if (id == null) {
-			throw new IllegalStateException("Id must not be null");
+	public CrudClientSupport<T> queryParam(String name, Object... values) {
+		return new CrudClientSupport<>(resource.queryParam(name, values), entityEnvelope, entityListEnvelope);
+	}
+
+	public WebTarget pathFor(Object segment) {
+		if (segment instanceof ApiEntity) {
+			segment = ((ApiEntity) segment).getId();
 		}
 
-		return resource.path(id.toString());
-	}
-
-	@Deprecated
-	public WebTarget path(ApiEntity entity) {
-		return pathFor(entity);
-	}
-
-	public WebTarget pathFor(ApiEntity entity) {
-		if (entity == null) {
-			throw new IllegalStateException("Entity must not be null");
+		if (segment == null) {
+			throw new IllegalStateException("Segment must not be null");
 		}
 
-		return pathFor(entity.getId());
+		return resource.path(segment.toString());
 	}
 
-	public T find(Object id) {
-		return find(pathFor(id));
+	public T find() {
+		return find(resource);
+	}
+
+	public T find(Object path) {
+		return find(pathFor(path));
 	}
 
 	public T find(WebTarget findResource) {
@@ -68,7 +66,12 @@ public class CrudClientSupport<T extends ApiEntity> {
 		return response.getResponseAsType(entityEnvelope).getData();
 	}
 
+	@Deprecated
 	public List<T> findAll() {
+		return findMany(resource);
+	}
+
+	public List<T> findMany() {
 		return findMany(resource);
 	}
 
@@ -78,22 +81,29 @@ public class CrudClientSupport<T extends ApiEntity> {
 	}
 
 	public T insertWithPost(T entity) {
-		CreateResponse response = clientResponseFactory.createWithPost(resource, entity);
+		return insertWithPost(resource, entity);
+	}
+
+	public T insertWithPost(WebTarget insertResource, T entity) {
+		CreateResponse response = clientResponseFactory.createWithPost(insertResource, entity);
 		return response.assertEntityCreatedAndGetResponse(entityEnvelope).getData();
 	}
 
 	public T updateWithPut(T entity) {
-		UpdateResponse response = clientResponseFactory.updateWithPut(path(entity), entity);
+		return updateWithPut(pathFor(entity), entity);
+	}
+
+	public T updateWithPut(WebTarget updateResource, T entity) {
+		UpdateResponse response = clientResponseFactory.updateWithPut(updateResource, entity);
 		return response.assertEntityUpdatedAndGetResponse(entityEnvelope).getData();
 	}
 
-	@Deprecated
-	public void delete(T entity) {
-		delete(entity.getId());
+	public void delete() {
+		delete(resource);
 	}
 
-	public void delete(Object id) {
-		delete(pathFor(id));
+	public void delete(Object path) {
+		delete(pathFor(path));
 	}
 
 	public void delete(WebTarget deleteResource) {
