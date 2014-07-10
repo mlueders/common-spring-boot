@@ -19,7 +19,9 @@ public abstract class AbstractResource {
 	@Autowired
 	private RequestScopedJerseyContext requestScopedJerseyContext;
 
+	@Deprecated
 	protected ApiEntityResponseFactory entityResponseFactory;
+	protected EnvelopeResponseFactory envelopeResponseFactory;
 
 	/**
 	 * The UriInfo is set by jersey per-request.  The spring request-scoped context is used to store the UriInfo
@@ -34,6 +36,7 @@ public abstract class AbstractResource {
 	private void postConstruct() {
 		assertResourceAnnotatedWithComponent();
 		entityResponseFactory = new ApiEntityResponseFactory(this.getClass(), requestScopedJerseyContext);
+		envelopeResponseFactory = new EnvelopeResponseFactory(getClass(), requestScopedJerseyContext);
 	}
 
 	/**
