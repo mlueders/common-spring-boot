@@ -5,8 +5,9 @@ import com.bancvue.rest.Envelope;
 import com.bancvue.rest.jaxrs.UriInfoHolder;
 import com.bancvue.rest.resource.ResourceResponseFactory;
 import java.net.URI;
+import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
+import java.util.Map;
 import javax.ws.rs.core.Response;
 
 public class EnvelopeResponseFactory {
@@ -52,7 +53,11 @@ public class EnvelopeResponseFactory {
 		return resourceResponseFactory.getTargetResourceLocation(pathFor(entity), templateValues);
 	}
 
-	public Response createGetManyResponse(List entities) {
+	public Response createGetManyResponse(Collection entities) {
+		return resourceResponseFactory.createGetManyResponse(envelope(entities));
+	}
+
+	public Response createGetManyResponse(Map entities) {
 		return resourceResponseFactory.createGetManyResponse(envelope(entities));
 	}
 
