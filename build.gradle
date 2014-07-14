@@ -47,7 +47,7 @@ sourceSets {
 }
 
 
-String springBootVersion = '1.0.2.RELEASE'
+String springBootVersion = '1.1.4.RELEASE'
 String jerseyVersion = '2.7'
 
 dependencies {
