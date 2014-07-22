@@ -9,7 +9,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.tomcat.jdbc.pool.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.actuate.autoconfigure.MetricRepositoryAutoConfiguration;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.autoconfigure.liquibase.LiquibaseAutoConfiguration;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.Resource;
@@ -25,8 +27,8 @@ import java.util.Vector;
 
 @Slf4j
 @Configuration
-@EnableAutoConfiguration
 @ComponentScan
+@EnableAutoConfiguration(exclude = LiquibaseAutoConfiguration.class)
 public class LiquibaseOperation implements CommandLineRunner {
 
 	public static final String UPDATE = "update";
