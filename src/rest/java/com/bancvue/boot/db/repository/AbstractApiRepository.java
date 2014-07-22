@@ -1,12 +1,11 @@
 package com.bancvue.boot.db.repository;
 
-import com.bancvue.boot.api.ApiEntity;
 import com.bancvue.boot.mapping.ListMapper;
 import java.util.List;
 import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 
-public abstract class AbstractApiRepository<API_ENTITY_TYPE extends ApiEntity, BACKING_ENTITY_TYPE> {
+public abstract class AbstractApiRepository<API_ENTITY_TYPE, BACKING_ENTITY_TYPE> {
 
 	@Autowired
 	private Mapper mapper;
