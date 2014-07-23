@@ -61,7 +61,7 @@ dependencies {
 	// Fix liquibase logging
 	compile 'com.mattbertolini:liquibase-slf4j:1.2.1'
 	compile 'org.projectlombok:lombok:1.12.2'
-	compile('net.sf.dozer:dozer:5.4.0') {
+	compile('net.sf.dozer:dozer:5.4.0-bv.1.0') {
 		exclude group: 'org.slf4j'
 	}
 
