@@ -1,5 +1,9 @@
 package com.bancvue.boot.config;
 
+import com.bancvue.boot.metrics.MetricRequestFilter;
+import com.bancvue.boot.metrics.MetricsConfiguration;
+import javax.annotation.PostConstruct;
+import javax.ws.rs.ApplicationPath;
 import org.dozer.DozerBeanMapper;
 import org.dozer.Mapper;
 import org.glassfish.jersey.server.ServerProperties;
@@ -7,11 +11,10 @@ import org.glassfish.jersey.servlet.ServletContainer;
 import org.glassfish.jersey.servlet.ServletProperties;
 import org.springframework.boot.context.embedded.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Import;
 import org.springframework.core.annotation.AnnotationUtils;
 
-import javax.annotation.PostConstruct;
-import javax.ws.rs.ApplicationPath;
-
+@Import(MetricsConfiguration.class)
 public class JerseyServiceConfig {
 
 	private String jerseyServletContextRoot;
@@ -28,8 +31,17 @@ public class JerseyServiceConfig {
 				ApplicationPath.class));
 	}
 
+	private static String findApplicationPath(ApplicationPath annotation) {
+		// Jersey doesn't like to be the default servlet, so map to /* as a fallback
+		if (annotation == null) {
+			return "/*";
+		}
+		String path = annotation.value();
+		return path.isEmpty() || path.equals("/") ? "/*" : path + "/*";
+	}
+
 	@Bean
-	public ServletRegistrationBean getServletRegistrationBean() {
+	public ServletRegistrationBean servletRegistrationBean() {
 		ServletContainer container = new ServletContainer();
 		ServletRegistrationBean registration = new ServletRegistrationBean(container, jerseyServletContextRoot);
 
@@ -41,22 +53,18 @@ public class JerseyServiceConfig {
 	}
 
 	@Bean
-	Mapper getDozerBeanMapper() {
+	public Mapper dozerBeanMapper() {
 		return new DozerBeanMapper();
 	}
 
 	@Bean
-	RequestScopedJerseyContext getRequestScopedJerseyContext() {
+	public RequestScopedJerseyContext requestScopedJerseyContext() {
 		return new RequestScopedJerseyContext();
 	}
 
-	private static String findApplicationPath(ApplicationPath annotation) {
-		// Jersey doesn't like to be the default servlet, so map to /* as a fallback
-		if (annotation == null) {
-			return "/*";
-		}
-		String path = annotation.value();
-		return path.isEmpty() || path.equals("/") ? "/*" : path + "/*";
+	@Bean
+	public MetricRequestFilter metricRequestFilter() {
+		return new MetricRequestFilter();
 	}
 
 }
