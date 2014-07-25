@@ -32,8 +32,9 @@ sourceSets {
 		java {
 			srcDir "src/main/java"
 			srcDir "src/rest/java"
-			include "com/bancvue/boot/client/**"
 			include "com/bancvue/boot/api/**"
+			include "com/bancvue/boot/client/**"
+			include "com/bancvue/boot/jackson/mapper/**"
 		}
 	}
 	test {
@@ -73,8 +74,12 @@ dependencies {
 	restCompile "org.glassfish.jersey.ext:jersey-bean-validation:${jerseyVersion}"
 	restCompile "org.hibernate:hibernate-validator:5.0.2.Final"
 	restCompile "com.bancvue:common-rest:1.+"
+	restCompile "com.fasterxml.jackson.datatype:jackson-datatype-joda:2.3.3"
+	restCompile "joda-time:joda-time:2.3"
 
 	restClientCompile "com.bancvue:common-rest:1.+"
+	restClientCompile "com.fasterxml.jackson.datatype:jackson-datatype-joda:2.3.3"
+	restClientCompile "joda-time:joda-time:2.3"
 
 	mainTestCompile 'org.codehaus.groovy:groovy-all:2.1.2'
 	mainTestCompile 'org.glassfish.jersey.core:jersey-server:2.7'
