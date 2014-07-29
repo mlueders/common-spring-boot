@@ -99,8 +99,8 @@ public class EnvelopeResponseFactory {
 		return resourceResponseFactory.createNotFoundResponse();
 	}
 	
-	public Response createMethodNotAllowedResponse() {
-		return resourceResponseFactory.createMethodNotAllowedResponse();
+	public Response createForbiddenResponse() {
+		return resourceResponseFactory.createForbiddenResponse();
 	}
 
 	public Response createConflictResponse(Object entity) {
