@@ -98,6 +98,10 @@ public class EnvelopeResponseFactory {
 	public Response createNotFoundResponse() {
 		return resourceResponseFactory.createNotFoundResponse();
 	}
+	
+	public Response createMethodNotAllowedResponse() {
+		return resourceResponseFactory.createMethodNotAllowedResponse();
+	}
 
 	public Response createConflictResponse(Object entity) {
 		return resourceResponseFactory.createConflictResponse(envelope(entity));
