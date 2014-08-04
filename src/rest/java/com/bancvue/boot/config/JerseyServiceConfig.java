@@ -2,6 +2,7 @@ package com.bancvue.boot.config;
 
 import com.bancvue.boot.metrics.MetricRequestFilter;
 import com.bancvue.boot.metrics.MetricsConfiguration;
+import java.util.regex.Pattern;
 import javax.annotation.PostConstruct;
 import javax.ws.rs.ApplicationPath;
 import org.dozer.DozerBeanMapper;
@@ -27,17 +28,33 @@ public class JerseyServiceConfig {
 
 	@PostConstruct
 	public void initializeUriRoot() {
-		jerseyServletContextRoot = findApplicationPath(AnnotationUtils.findAnnotation(jerseyResourceConfigClass,
-				ApplicationPath.class));
+		jerseyServletContextRoot = resolveApplicationPathFromAnnotation();
 	}
 
-	private static String findApplicationPath(ApplicationPath annotation) {
-		// Jersey doesn't like to be the default servlet, so map to /* as a fallback
+	private String resolveApplicationPathFromAnnotation() {
+		ApplicationPath annotation = AnnotationUtils.findAnnotation(jerseyResourceConfigClass, ApplicationPath.class);
 		if (annotation == null) {
-			return "/*";
+			throw new ApplicationPathAnnotationMissingException(jerseyResourceConfigClass);
 		}
-		String path = annotation.value();
-		return path.isEmpty() || path.equals("/") ? "/*" : path + "/*";
+
+		return resolveApplicationPath(annotation.value());
+	}
+
+	/**
+	 * Jersey does not play well with Spring if the jersey application path is / or /*.  The effect is that
+	 * exceptions get translated to 404 responses (on exception, the server tries to POST to /error which spring
+	 * is aware of but Jersey ends up handling, resulting in a 404 back to the client).  So, fail fast if there is
+	 * no context root.
+	 */
+	private String resolveApplicationPath(String applicationPath) {
+		if (!Pattern.matches("^/\\w.*", applicationPath)) {
+			throw new InvalidApplicationPathException(applicationPath);
+		}
+
+		if (!applicationPath.endsWith("/*")) {
+			applicationPath += applicationPath.endsWith("/") ? "*" : "/*";
+		}
+		return applicationPath;
 	}
 
 	@Bean
@@ -65,6 +82,19 @@ public class JerseyServiceConfig {
 	@Bean
 	public MetricRequestFilter metricRequestFilter() {
 		return new MetricRequestFilter();
+	}
+
+
+	public static final class ApplicationPathAnnotationMissingException extends RuntimeException {
+		public ApplicationPathAnnotationMissingException(Class configClass) {
+			super("Jersey configuration=" + configClass + " must be annotated with " + ApplicationPath.class.getName());
+		}
+	}
+
+	public static final class InvalidApplicationPathException extends RuntimeException {
+		public InvalidApplicationPathException(String path) {
+			super("Invalid application path=" + path);
+		}
 	}
 
 }
