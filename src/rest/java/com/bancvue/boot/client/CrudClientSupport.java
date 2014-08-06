@@ -1,6 +1,7 @@
 package com.bancvue.boot.client;
 
 import com.bancvue.boot.api.ApiEntity;
+import com.bancvue.boot.api.ApiValueObject;
 import com.bancvue.rest.Envelope;
 import com.bancvue.rest.client.ClientResponseFactory;
 import com.bancvue.rest.client.CreateResponse;
@@ -18,7 +19,8 @@ public class CrudClientSupport<T> {
 	private GenericType<Envelope<T>> entityEnvelope;
 	private GenericType<Envelope<List<T>>> entityListEnvelope;
 
-	public CrudClientSupport(WebTarget resource, GenericType<Envelope<T>> entityEnvelope, GenericType<Envelope<List<T>>> entityListEnvelope) {
+	public CrudClientSupport(WebTarget resource, GenericType<Envelope<T>> entityEnvelope,
+			GenericType<Envelope<List<T>>> entityListEnvelope) {
 		this.resource = resource;
 		this.entityEnvelope = entityEnvelope;
 		this.entityListEnvelope = entityListEnvelope;
@@ -44,9 +46,9 @@ public class CrudClientSupport<T> {
 	public WebTarget pathFor(Object segment) {
 		if (segment instanceof ApiEntity) {
 			segment = ((ApiEntity) segment).getId();
-		}
-
-		if (segment == null) {
+		} else if (segment instanceof ApiValueObject) {
+			return resource;
+		} else if (segment == null) {
 			throw new IllegalStateException("Segment must not be null");
 		}
 
