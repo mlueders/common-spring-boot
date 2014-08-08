@@ -1,18 +1,38 @@
 package com.bancvue.boot.client
-
-import com.bancvue.boot.api.ApiValueObject
+import com.bancvue.boot.api.ApiEntity
 import javax.ws.rs.client.WebTarget
 import spock.lang.Specification
 
 class CrudClientSupportSpec extends Specification {
 
-	def "should return resource if segment is a value object"() {
+	def "pathFor should throw exception if segment is null"(){
 		given:
 		WebTarget resource = Mock()
 		CrudClientSupport crudClientSupport = new CrudClientSupport(resource, null, null)
-		ApiValueObject segment = new ApiValueObject() {}
+		def segment = null
 
-		expect:
-		crudClientSupport.pathFor(segment) == resource
+		when:
+		crudClientSupport.pathFor(segment)
+
+		then:
+		thrown(IllegalArgumentException)
+	}
+
+	def "pathFor should throw exception if ApiEntity segment has a null id"(){
+		given:
+		WebTarget resource = Mock()
+		CrudClientSupport crudClientSupport = new CrudClientSupport(resource, null, null)
+		ApiEntity<Integer> segment = new ApiEntity<Integer>() {
+			@Override
+			Integer getId() {
+				return null
+			}
+		}
+
+		when:
+		crudClientSupport.pathFor(segment)
+
+		then:
+		thrown(IllegalArgumentException)
 	}
 }
