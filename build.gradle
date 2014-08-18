@@ -58,6 +58,7 @@ dependencies {
 	compile "org.springframework.boot:spring-boot-starter-data-jpa:${springBootVersion}"
 	compile 'com.ryantenney.metrics:metrics-spring:3.0.0'
 	compile 'com.bancvue:common-config:2.+'
+	compile 'org.codehaus.janino:janino:2.6.1'
 	compile 'org.liquibase:liquibase-core:3.1.1-bv.1.0'
 	// Fix liquibase logging
 	compile 'com.mattbertolini:liquibase-slf4j:1.2.1'
