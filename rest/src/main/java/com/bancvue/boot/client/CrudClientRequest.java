@@ -13,15 +13,24 @@ import javax.ws.rs.core.GenericType;
 
 public class CrudClientRequest<T> {
 
+	private static final GenericTypeFactory GENERIC_TYPE_FACTORY = GenericTypeFactory.getInstance();
+
 	private ClientRequest clientRequest;
 	private GenericType<DefaultEnvelope<T>> entityEnvelope;
 	private GenericType<DefaultEnvelope<List<T>>> entityListEnvelope;
 
-	public CrudClientRequest(ClientRequest clientRequest, GenericType<DefaultEnvelope<T>> entityEnvelope,
+	@SuppressWarnings("unchecked")
+	public CrudClientRequest(ClientRequest clientRequest, Class<T> type) {
+		this.clientRequest = clientRequest;
+		this.entityEnvelope = GENERIC_TYPE_FACTORY.createGenericType(DefaultEnvelope.class, type);
+		this.entityListEnvelope = GENERIC_TYPE_FACTORY.createGenericType(DefaultEnvelope.class, List.class, type);
+	}
+
+	private CrudClientRequest(ClientRequest clientRequest, GenericType<DefaultEnvelope<T>> entityEnvelope,
 	                         GenericType<DefaultEnvelope<List<T>>> entityListEnvelope) {
+		this.clientRequest = clientRequest;
 		this.entityEnvelope = entityEnvelope;
 		this.entityListEnvelope = entityListEnvelope;
-		this.clientRequest = clientRequest;
 	}
 
 	public ClientRequest getClientRequest() {
@@ -70,39 +79,66 @@ public class CrudClientRequest<T> {
 	}
 
 
+	/**
+	 * Invokes HTTP GET method for the current request, returning a single entity.
+	 */
 	public T find() {
 		GetResponse response = clientRequest.get();
 		return response.getValidatedResponse(entityEnvelope).getData();
 	}
 
+	/**
+	 * Invokes HTTP GET method for the current request, modifying the request path
+	 * with the input path and returning a single entity.
+	 */
 	public T find(Object path) {
 		return path(path).find();
 	}
 
+	/**
+	 * Invokes HTTP GET method for the current request, returning a list of entities.
+	 */
 	public List<T> findMany() {
 		GetResponse response = clientRequest.get();
 		return response.getValidatedResponse(entityListEnvelope).getData();
 	}
 
+	/**
+	 * Invokes HTTP POST method for the current request and the input entity.
+	 */
 	public T insertWithPost(T entity) {
 		CreateResponse response = clientRequest.createWithPost(entity);
 		return response.getValidatedResponse(entityEnvelope).getData();
 	}
 
+	/**
+	 * Invokes HTTP PUT method for the current request and the input entity.
+	 */
 	public T updateWithPut(T entity) {
 		UpdateResponse response = clientRequest.updateWithPut(entity);
 		return response.getValidatedResponse(entityEnvelope).getData();
 	}
 
+	/**
+	 * Invokes HTTP PUT method for the current request and the input entity,
+	 * modifying the request path with the input ApiEntity id.
+	 */
 	public T updateEntityWithPut(ApiEntity entity) {
 		return path(entity).updateWithPut((T) entity);
 	}
 
+	/**
+	 * Invokes HTTP DELETE method for the current request.
+	 */
 	public void delete() {
 		DeleteResponse response = clientRequest.delete();
 		response.getValidatedResponse(String.class);
 	}
 
+	/**
+	 * Invokes HTTP DELETE method for the current request, modifying the request path
+	 * with the input path.
+	 */
 	public void delete(Object path) {
 		path(path).delete();
 	}

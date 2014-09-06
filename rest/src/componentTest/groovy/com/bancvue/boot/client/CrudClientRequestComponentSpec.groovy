@@ -7,8 +7,6 @@ import com.bancvue.boot.widget.Widget
 import com.bancvue.boot.widget.WidgetResource
 import com.bancvue.boot.widget.WidgetServiceConfig
 import com.bancvue.rest.client.BasicClientRequest
-import com.bancvue.rest.envelope.DefaultEnvelope
-import javax.ws.rs.core.GenericType
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.IntegrationTest
 import org.springframework.test.context.ContextConfiguration
@@ -20,9 +18,6 @@ import spock.lang.Specification
 @ContextConfiguration(classes = [WidgetServiceConfig, ComponentTestConfig], loader = BVConfigContextLoader)
 class CrudClientRequestComponentSpec extends Specification {
 
-	public static final GenericType<DefaultEnvelope<Widget>> WIDGET_ENVELOPE = new GenericType<DefaultEnvelope<Widget>>() {};
-	public static final GenericType<DefaultEnvelope<List<Widget>>> WIDGET_LIST_ENVELOPE = new GenericType<DefaultEnvelope<List<Widget>>>() {};
-
 	@Autowired
 	private ResourceIntegrationTestSupport resourceSupport
 	@Autowired
@@ -31,7 +26,7 @@ class CrudClientRequestComponentSpec extends Specification {
 
 	def setup() {
 		BasicClientRequest request = new BasicClientRequest(resourceSupport.resource)
-		support = new CrudClientRequest<>(request, WIDGET_ENVELOPE, WIDGET_LIST_ENVELOPE).path("/root/widgets")
+		support = new CrudClientRequest<>(request, Widget.class).path("/root/widgets")
 	}
 
 	def cleanup() {
