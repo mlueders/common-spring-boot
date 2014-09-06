@@ -18,7 +18,7 @@ import spock.lang.Specification
 @IntegrationTest
 @WebAppConfiguration
 @ContextConfiguration(classes = [WidgetServiceConfig, ComponentTestConfig], loader = BVConfigContextLoader)
-class CrudClientSupportComponentSpec extends Specification {
+class CrudClientRequestComponentSpec extends Specification {
 
 	public static final GenericType<DefaultEnvelope<Widget>> WIDGET_ENVELOPE = new GenericType<DefaultEnvelope<Widget>>() {};
 	public static final GenericType<DefaultEnvelope<List<Widget>>> WIDGET_LIST_ENVELOPE = new GenericType<DefaultEnvelope<List<Widget>>>() {};
@@ -27,11 +27,11 @@ class CrudClientSupportComponentSpec extends Specification {
 	private ResourceIntegrationTestSupport resourceSupport
 	@Autowired
 	WidgetResource resource
-	private CrudClientSupport<Widget> support
+	private CrudClientRequest<Widget> support
 
 	def setup() {
 		BasicClientRequest request = new BasicClientRequest(resourceSupport.resource)
-		support = new CrudClientSupport<>(request, WIDGET_ENVELOPE, WIDGET_LIST_ENVELOPE).path("/root/widgets")
+		support = new CrudClientRequest<>(request, WIDGET_ENVELOPE, WIDGET_LIST_ENVELOPE).path("/root/widgets")
 	}
 
 	def cleanup() {

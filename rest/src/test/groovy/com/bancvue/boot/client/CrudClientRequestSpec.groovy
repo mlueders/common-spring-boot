@@ -4,12 +4,12 @@ import com.bancvue.boot.api.ApiEntity
 import com.bancvue.rest.client.ClientRequest
 import spock.lang.Specification
 
-class CrudClientSupportSpec extends Specification {
+class CrudClientRequestSpec extends Specification {
 
 	def "pathFor should throw exception if segment is null"(){
 		given:
 		ClientRequest request = Mock()
-		CrudClientSupport crudClientSupport = new CrudClientSupport(request, null, null)
+		CrudClientRequest crudClientSupport = new CrudClientRequest(request, null, null)
 		def segment = null
 
 		when:
@@ -22,7 +22,7 @@ class CrudClientSupportSpec extends Specification {
 	def "pathFor should throw exception if ApiEntity segment has a null id"(){
 		given:
 		ClientRequest request = Mock()
-		CrudClientSupport crudClientSupport = new CrudClientSupport(request, null, null)
+		CrudClientRequest crudClientSupport = new CrudClientRequest(request, null, null)
 		ApiEntity<Integer> entity = new ApiEntity<Integer>() {
 			@Override
 			Integer getId() {

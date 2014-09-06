@@ -11,13 +11,13 @@ import java.util.List;
 import javax.ws.rs.core.Cookie;
 import javax.ws.rs.core.GenericType;
 
-public class CrudClientSupport<T> {
+public class CrudClientRequest<T> {
 
 	private ClientRequest clientRequest;
 	private GenericType<DefaultEnvelope<T>> entityEnvelope;
 	private GenericType<DefaultEnvelope<List<T>>> entityListEnvelope;
 
-	public CrudClientSupport(ClientRequest clientRequest, GenericType<DefaultEnvelope<T>> entityEnvelope,
+	public CrudClientRequest(ClientRequest clientRequest, GenericType<DefaultEnvelope<T>> entityEnvelope,
 	                         GenericType<DefaultEnvelope<List<T>>> entityListEnvelope) {
 		this.entityEnvelope = entityEnvelope;
 		this.entityListEnvelope = entityListEnvelope;
@@ -28,7 +28,7 @@ public class CrudClientSupport<T> {
 		return clientRequest;
 	}
 
-	public CrudClientSupport<T> path(ApiEntity entity) {
+	public CrudClientRequest<T> path(ApiEntity entity) {
 		if (entity.getId() == null) {
 			throw new IllegalArgumentException("Entity id must not be null");
 		}
@@ -36,7 +36,7 @@ public class CrudClientSupport<T> {
 		return path(entity.getId());
 	}
 
-	public CrudClientSupport<T> path(Object segment) {
+	public CrudClientRequest<T> path(Object segment) {
 		if (segment == null) {
 			throw new IllegalArgumentException("Segment must not be null");
 		}
@@ -45,28 +45,28 @@ public class CrudClientSupport<T> {
 		return createCrudClientRequest(clientRequest.path(pathString));
 	}
 
-	public CrudClientSupport<T> queryParam(String name, Object... values) {
+	public CrudClientRequest<T> queryParam(String name, Object... values) {
 		return createCrudClientRequest(clientRequest.queryParam(name, values));
 	}
 
-	public CrudClientSupport<T> header(String name, Object value) {
+	public CrudClientRequest<T> header(String name, Object value) {
 		return createCrudClientRequest(clientRequest.header(name, value));
 	}
 
-	public CrudClientSupport<T> property(String name, Object value) {
+	public CrudClientRequest<T> property(String name, Object value) {
 		return createCrudClientRequest(clientRequest.property(name, value));
 	}
 
-	public CrudClientSupport<T> cookie(String name, String value) {
+	public CrudClientRequest<T> cookie(String name, String value) {
 		return createCrudClientRequest(clientRequest.cookie(name, value));
 	}
 
-	public CrudClientSupport<T> cookie(Cookie cookie) {
+	public CrudClientRequest<T> cookie(Cookie cookie) {
 		return createCrudClientRequest(clientRequest.cookie(cookie));
 	}
 
-	private CrudClientSupport<T> createCrudClientRequest(ClientRequest clientRequest) {
-		return new CrudClientSupport<>(clientRequest, entityEnvelope, entityListEnvelope);
+	private CrudClientRequest<T> createCrudClientRequest(ClientRequest clientRequest) {
+		return new CrudClientRequest<>(clientRequest, entityEnvelope, entityListEnvelope);
 	}
 
 
