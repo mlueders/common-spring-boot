@@ -1,7 +1,8 @@
 package com.bancvue.boot.resource;
 
 import com.bancvue.boot.api.ApiEntity;
-import com.bancvue.rest.Envelope;
+import com.bancvue.rest.envelope.DefaultEnvelope;
+import com.bancvue.rest.envelope.Envelope;
 import com.bancvue.rest.jaxrs.UriInfoHolder;
 import com.bancvue.rest.resource.ResourceResponseFactory;
 import java.net.URI;
@@ -129,7 +130,7 @@ public class EnvelopeResponseFactory {
 	}
 
 	private <T> Envelope<T> envelope(T entity) {
-		return new Envelope.Builder<>(entity).build();
+		return new DefaultEnvelope.Builder<>(entity).build();
 	}
 
 }

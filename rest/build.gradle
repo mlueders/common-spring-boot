@@ -34,11 +34,11 @@ dependencies {
 	}
 	compile "org.glassfish.jersey.ext:jersey-bean-validation:${jerseyVersion}"
 	compile "org.hibernate:hibernate-validator:5.0.2.Final"
-	compile "com.bancvue:common-rest:1.+"
+	compile "com.bancvue:common-rest:2.+"
 	compile "com.fasterxml.jackson.datatype:jackson-datatype-joda:2.3.3"
 	compile "joda-time:joda-time:2.3"
 
-	clientCompile "com.bancvue:common-rest:1.+"
+	clientCompile "com.bancvue:common-rest:2.+"
 	clientCompile "com.fasterxml.jackson.datatype:jackson-datatype-joda:2.3.3"
 	clientCompile "joda-time:joda-time:2.3"
 

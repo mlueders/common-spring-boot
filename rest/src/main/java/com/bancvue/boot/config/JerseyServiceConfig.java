@@ -2,9 +2,11 @@ package com.bancvue.boot.config;
 
 import com.bancvue.boot.metrics.MetricRequestFilter;
 import com.bancvue.boot.metrics.MetricsConfiguration;
+import com.bancvue.rest.client.WebTargetFactory;
 import java.util.regex.Pattern;
 import javax.annotation.PostConstruct;
 import javax.ws.rs.ApplicationPath;
+import javax.ws.rs.client.Client;
 import org.dozer.DozerBeanMapper;
 import org.dozer.Mapper;
 import org.glassfish.jersey.server.ServerProperties;
@@ -82,6 +84,12 @@ public class JerseyServiceConfig {
 	@Bean
 	public MetricRequestFilter metricRequestFilter() {
 		return new MetricRequestFilter();
+	}
+
+	@Bean
+	public Client jaxrsClient() {
+		// TODO: need to read configuration properties and initialize client
+		return WebTargetFactory.createDefaultJaxrsClient();
 	}
 
 

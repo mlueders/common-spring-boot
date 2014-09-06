@@ -1,115 +1,100 @@
 package com.bancvue.boot.client;
 
 import com.bancvue.boot.api.ApiEntity;
-import com.bancvue.rest.Envelope;
-import com.bancvue.rest.client.ClientResponseFactory;
-import com.bancvue.rest.client.CreateResponse;
-import com.bancvue.rest.client.DeleteResponse;
-import com.bancvue.rest.client.GetResponse;
-import com.bancvue.rest.client.UpdateResponse;
+import com.bancvue.rest.client.ClientRequest;
+import com.bancvue.rest.client.response.CreateResponse;
+import com.bancvue.rest.client.response.DeleteResponse;
+import com.bancvue.rest.client.response.GetResponse;
+import com.bancvue.rest.client.response.UpdateResponse;
+import com.bancvue.rest.envelope.DefaultEnvelope;
+import com.bancvue.rest.envelope.Envelope;
 import java.util.List;
-import javax.ws.rs.client.WebTarget;
+import javax.validation.constraints.NotNull;
+import javax.ws.rs.core.Cookie;
 import javax.ws.rs.core.GenericType;
 
 public class CrudClientSupport<T> {
 
-	private WebTarget resource;
-	private ClientResponseFactory clientResponseFactory;
-	private GenericType<Envelope<T>> entityEnvelope;
-	private GenericType<Envelope<List<T>>> entityListEnvelope;
+	private ClientRequest clientRequest;
+	private GenericType<DefaultEnvelope<T>> entityEnvelope;
+	private GenericType<DefaultEnvelope<List<T>>> entityListEnvelope;
 
-	public CrudClientSupport(WebTarget resource, GenericType<Envelope<T>> entityEnvelope,
-			GenericType<Envelope<List<T>>> entityListEnvelope) {
-		this.resource = resource;
+	public CrudClientSupport(ClientRequest clientRequest, GenericType<DefaultEnvelope<T>> entityEnvelope,
+	                         GenericType<DefaultEnvelope<List<T>>> entityListEnvelope) {
 		this.entityEnvelope = entityEnvelope;
 		this.entityListEnvelope = entityListEnvelope;
-		this.clientResponseFactory = new ClientResponseFactory();
+		this.clientRequest = clientRequest;
 	}
 
-	public WebTarget getResource() {
-		return resource;
+	public ClientRequest getClientRequest() {
+		return clientRequest;
 	}
 
-	public ClientResponseFactory getClientResponseFactory() {
-		return clientResponseFactory;
-	}
-
-	public CrudClientSupport<T> path(Object subpath) {
-		return new CrudClientSupport<>(pathFor(subpath), entityEnvelope, entityListEnvelope);
-	}
-
-	public CrudClientSupport<T> queryParam(String name, Object... values) {
-		return new CrudClientSupport<>(resource.queryParam(name, values), entityEnvelope, entityListEnvelope);
-	}
-
-	public WebTarget pathFor(Object segment) {
-		if (segment instanceof ApiEntity) {
-			segment = ((ApiEntity) segment).getId();
+	public CrudClientSupport<T> path(ApiEntity entity) {
+		if (entity.getId() == null) {
+			throw new IllegalArgumentException("Entity id must not be null");
 		}
 
+		return path(entity.getId());
+	}
+
+	public CrudClientSupport<T> path(Object segment) {
 		if (segment == null) {
 			throw new IllegalArgumentException("Segment must not be null");
 		}
 
-		return resource.path(segment.toString());
+		String pathString = segment.toString();
+		return createCrudClientRequest(clientRequest.path(pathString));
 	}
+
+	public CrudClientSupport<T> queryParam(String name, Object... values) {
+		return createCrudClientRequest(clientRequest.queryParam(name, values));
+	}
+
+	public CrudClientSupport<T> header(String name, Object value) {
+		return createCrudClientRequest(clientRequest.header(name, value));
+	}
+
+	public CrudClientSupport<T> property(String name, Object value) {
+		return createCrudClientRequest(clientRequest.property(name, value));
+	}
+
+	public CrudClientSupport<T> cookie(String name, String value) {
+		return createCrudClientRequest(clientRequest.cookie(name, value));
+	}
+
+	public CrudClientSupport<T> cookie(Cookie cookie) {
+		return createCrudClientRequest(clientRequest.cookie(cookie));
+	}
+
+	private CrudClientSupport<T> createCrudClientRequest(ClientRequest clientRequest) {
+		return new CrudClientSupport<>(clientRequest, entityEnvelope, entityListEnvelope);
+	}
+
 
 	public T find() {
-		return find(resource);
-	}
-
-	public T find(Object path) {
-		return find(pathFor(path));
-	}
-
-	public T find(WebTarget findResource) {
-		GetResponse response = clientResponseFactory.get(findResource);
-		return response.getResponseAsType(entityEnvelope).getData();
-	}
-
-	@Deprecated
-	public List<T> findAll() {
-		return findMany(resource);
+		GetResponse response = clientRequest.get();
+		return response.getValidatedResponse(entityEnvelope).getData();
 	}
 
 	public List<T> findMany() {
-		return findMany(resource);
-	}
-
-	public List<T> findMany(WebTarget findManyResource) {
-		GetResponse response = clientResponseFactory.get(findManyResource);
-		return response.getResponseAsType(entityListEnvelope).getData();
+		GetResponse response = clientRequest.get();
+		return response.getValidatedResponse(entityListEnvelope).getData();
 	}
 
 	public T insertWithPost(T entity) {
-		return insertWithPost(resource, entity);
-	}
-
-	public T insertWithPost(WebTarget insertResource, T entity) {
-		CreateResponse response = clientResponseFactory.createWithPost(insertResource, entity);
-		return response.assertEntityCreatedAndGetResponse(entityEnvelope).getData();
+		CreateResponse response = clientRequest.createWithPost(entity);
+		return response.getValidatedResponse(entityEnvelope).getData();
 	}
 
 	public T updateWithPut(T entity) {
-		return updateWithPut(pathFor(entity), entity);
-	}
-
-	public T updateWithPut(WebTarget updateResource, T entity) {
-		UpdateResponse response = clientResponseFactory.updateWithPut(updateResource, entity);
-		return response.assertEntityUpdatedAndGetResponse(entityEnvelope).getData();
+		UpdateResponse response = clientRequest.updateWithPut(entity);
+		return response.getValidatedResponse(entityEnvelope).getData();
 	}
 
 	public void delete() {
-		delete(resource);
-	}
-
-	public void delete(Object path) {
-		delete(pathFor(path));
-	}
-
-	public void delete(WebTarget deleteResource) {
-		DeleteResponse response = clientResponseFactory.delete(deleteResource);
-		response.assertEntityDeletedAndGetResponse(String.class);
+		DeleteResponse response = clientRequest.delete();
+		response.getValidatedResponse(String.class);
 	}
 
 }
