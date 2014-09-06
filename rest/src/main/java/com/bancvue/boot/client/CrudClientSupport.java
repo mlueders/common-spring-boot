@@ -7,9 +7,7 @@ import com.bancvue.rest.client.response.DeleteResponse;
 import com.bancvue.rest.client.response.GetResponse;
 import com.bancvue.rest.client.response.UpdateResponse;
 import com.bancvue.rest.envelope.DefaultEnvelope;
-import com.bancvue.rest.envelope.Envelope;
 import java.util.List;
-import javax.validation.constraints.NotNull;
 import javax.ws.rs.core.Cookie;
 import javax.ws.rs.core.GenericType;
 
@@ -77,6 +75,10 @@ public class CrudClientSupport<T> {
 		return response.getValidatedResponse(entityEnvelope).getData();
 	}
 
+	public T find(Object path) {
+		return path(path).find();
+	}
+
 	public List<T> findMany() {
 		GetResponse response = clientRequest.get();
 		return response.getValidatedResponse(entityListEnvelope).getData();
@@ -92,9 +94,17 @@ public class CrudClientSupport<T> {
 		return response.getValidatedResponse(entityEnvelope).getData();
 	}
 
+	public T updateEntityWithPut(ApiEntity entity) {
+		return path(entity).updateWithPut((T) entity);
+	}
+
 	public void delete() {
 		DeleteResponse response = clientRequest.delete();
 		response.getValidatedResponse(String.class);
+	}
+
+	public void delete(Object path) {
+		path(path).delete();
 	}
 
 }
