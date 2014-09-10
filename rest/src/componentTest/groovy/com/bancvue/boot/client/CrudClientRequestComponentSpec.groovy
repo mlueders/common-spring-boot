@@ -6,7 +6,7 @@ import com.bancvue.boot.testsupport.ResourceIntegrationTestSupport
 import com.bancvue.boot.widget.Widget
 import com.bancvue.boot.widget.WidgetResource
 import com.bancvue.boot.widget.WidgetServiceConfig
-import com.bancvue.rest.client.BasicClientRequest
+import com.bancvue.rest.client.request.BasicClientRequest
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.IntegrationTest
 import org.springframework.test.context.ContextConfiguration
@@ -59,7 +59,7 @@ class CrudClientRequestComponentSpec extends Specification {
 		resource.widgetMap[1l] = new Widget(5)
 
 		when:
-		support.updateEntityWithPut(new Widget(1))
+		support.updateWithPut(1, new Widget(1))
 
 		then:
 		resource.widgetMap[1l] == new Widget(1)

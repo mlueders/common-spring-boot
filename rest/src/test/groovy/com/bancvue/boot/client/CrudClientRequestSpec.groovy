@@ -1,7 +1,7 @@
 package com.bancvue.boot.client
 
 import com.bancvue.boot.api.ApiEntity
-import com.bancvue.rest.client.ClientRequest
+import com.bancvue.rest.client.request.ClientRequest
 import spock.lang.Specification
 
 class CrudClientRequestSpec extends Specification {

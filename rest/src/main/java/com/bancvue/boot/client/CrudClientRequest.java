@@ -1,7 +1,7 @@
 package com.bancvue.boot.client;
 
 import com.bancvue.boot.api.ApiEntity;
-import com.bancvue.rest.client.ClientRequest;
+import com.bancvue.rest.client.request.ClientRequest;
 import com.bancvue.rest.client.response.CreateResponse;
 import com.bancvue.rest.client.response.DeleteResponse;
 import com.bancvue.rest.client.response.GetResponse;
@@ -112,6 +112,14 @@ public class CrudClientRequest<T> {
 	}
 
 	/**
+	 * Invokes HTTP POST method for the given input entity, modifying the request
+	 * path with the input path.
+	 */
+	public T insertWithPost(Object path, T entity) {
+		return path(path).insertWithPost(entity);
+	}
+
+	/**
 	 * Invokes HTTP PUT method for the current request and the input entity.
 	 */
 	public T updateWithPut(T entity) {
@@ -120,11 +128,11 @@ public class CrudClientRequest<T> {
 	}
 
 	/**
-	 * Invokes HTTP PUT method for the current request and the input entity,
-	 * modifying the request path with the input ApiEntity id.
+	 * Invokes HTTP PUT method for the given input entity, modifying the request
+	 * path with the input path.
 	 */
-	public T updateEntityWithPut(ApiEntity entity) {
-		return path(entity).updateWithPut((T) entity);
+	public T updateWithPut(Object path, T entity) {
+		return path(path).updateWithPut(entity);
 	}
 
 	/**

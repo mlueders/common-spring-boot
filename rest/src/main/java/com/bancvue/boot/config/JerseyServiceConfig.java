@@ -2,11 +2,10 @@ package com.bancvue.boot.config;
 
 import com.bancvue.boot.metrics.MetricRequestFilter;
 import com.bancvue.boot.metrics.MetricsConfiguration;
-import com.bancvue.rest.client.WebTargetFactory;
+import com.bancvue.rest.client.ImmutableClient;
 import java.util.regex.Pattern;
 import javax.annotation.PostConstruct;
 import javax.ws.rs.ApplicationPath;
-import javax.ws.rs.client.Client;
 import org.dozer.DozerBeanMapper;
 import org.dozer.Mapper;
 import org.glassfish.jersey.server.ServerProperties;
@@ -87,9 +86,8 @@ public class JerseyServiceConfig {
 	}
 
 	@Bean
-	public Client jaxrsClient() {
-		// TODO: need to read configuration properties and initialize client
-		return WebTargetFactory.createDefaultJaxrsClient();
+	public ImmutableClient jaxrsClient() {
+		return ImmutableClient.createDefault();
 	}
 
 
