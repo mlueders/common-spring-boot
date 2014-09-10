@@ -6,7 +6,7 @@ import spock.lang.Specification
 
 class CrudClientRequestSpec extends Specification {
 
-	def "pathFor should throw exception if segment is null"(){
+	def "path should throw exception if segment is null"(){
 		given:
 		ClientRequest request = Mock()
 		CrudClientRequest crudClientSupport = new CrudClientRequest(request, null, null)
@@ -19,7 +19,7 @@ class CrudClientRequestSpec extends Specification {
 		thrown(IllegalArgumentException)
 	}
 
-	def "pathFor should throw exception if ApiEntity segment has a null id"(){
+	def "path should throw exception if ApiEntity segment has a null id"(){
 		given:
 		ClientRequest request = Mock()
 		CrudClientRequest crudClientSupport = new CrudClientRequest(request, null, null)
