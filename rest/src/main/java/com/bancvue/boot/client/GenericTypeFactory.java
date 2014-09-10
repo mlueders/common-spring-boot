@@ -78,6 +78,19 @@ public class GenericTypeFactory {
 		public String toString() {
 			return rawType + "<" + actualType + ">";
 		}
+
+		public int hashCode() {
+			return rawType.hashCode() ^ actualType.hashCode();
+		}
+
+		public boolean equals(Object other) {
+			if ((other == null) || (other.getClass() != getClass())) {
+				return false;
+			}
+
+			SimpleParameterizedType otherType = (SimpleParameterizedType) other;
+			return (rawType == otherType.rawType) && (actualType == otherType.actualType);
+		}
 	}
 
 }

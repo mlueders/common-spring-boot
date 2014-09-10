@@ -42,4 +42,13 @@ class GenericTypeFactoryTest extends Specification {
 		innerParameterizedType.actualTypeArguments == [String.class]
 	}
 
+	def "parameterized types created with the same arguments should be equal"() {
+		when:
+		GenericType genericType1 = factory.createGenericType(List.class, String.class)
+		GenericType genericType2 = factory.createGenericType(List.class, String.class)
+
+		then:
+		genericType1 == genericType2
+	}
+
 }
