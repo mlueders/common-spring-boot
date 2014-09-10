@@ -22,32 +22,43 @@ class CrudClientRequestComponentSpec extends Specification {
 	private ResourceIntegrationTestSupport resourceSupport
 	@Autowired
 	WidgetResource resource
-	private CrudClientRequest<Widget> support
+	private CrudClientRequest<Widget> crudRequest
 
 	def setup() {
-		BasicClientRequest request = new BasicClientRequest(resourceSupport.resource)
-		support = new CrudClientRequest<>(request, Widget.class).path("/root/widgets")
+		BasicClientRequest clientRequest = new BasicClientRequest(resourceSupport.resource)
+		crudRequest = new CrudClientRequest<>(clientRequest, Widget.class).path("/root/widgets")
 	}
 
 	def cleanup() {
 		resource.widgetMap.clear()
 	}
 
-	def "findMany"() {
+	def "find"() {
 		given:
-		resource.widgetMap[1] = new Widget(1)
-		resource.widgetMap[2] = new Widget(2)
+		resource.widgetMap[1l] = new Widget(1)
 
 		when:
-		List<Widget> widgets = support.findMany()
+		Widget widget = crudRequest.find(1)
+
+		then:
+		widget == new Widget(1)
+	}
+
+	def "findMany"() {
+		given:
+		resource.widgetMap[1l] = new Widget(1)
+		resource.widgetMap[2l] = new Widget(2)
+
+		when:
+		List<Widget> widgets = crudRequest.findMany()
 
 		then:
 		widgets == [new Widget(1), new Widget(2)]
 	}
 
-	def "insertWithPost"() {
+	def "createWithPost"() {
 		when:
-		support.insertWithPost(new Widget(1))
+		crudRequest.createWithPost(new Widget(1))
 
 		then:
 		resource.widgetMap[1l] == new Widget(1)
@@ -59,7 +70,7 @@ class CrudClientRequestComponentSpec extends Specification {
 		resource.widgetMap[1l] = new Widget(5)
 
 		when:
-		support.updateWithPut(1, new Widget(1))
+		crudRequest.updateWithPut(1, new Widget(1))
 
 		then:
 		resource.widgetMap[1l] == new Widget(1)
@@ -71,7 +82,7 @@ class CrudClientRequestComponentSpec extends Specification {
 		resource.widgetMap[1l] = widget
 
 		when:
-		support.path(widget).delete()
+		crudRequest.path(widget).delete()
 
 		then:
 		resource.widgetMap.isEmpty()

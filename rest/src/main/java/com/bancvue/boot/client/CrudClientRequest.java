@@ -106,7 +106,7 @@ public class CrudClientRequest<T> {
 	/**
 	 * Invokes HTTP POST method for the current request and the input entity.
 	 */
-	public T insertWithPost(T entity) {
+	public T createWithPost(T entity) {
 		CreateResponse response = clientRequest.createWithPost(entity);
 		return response.getValidatedResponse(entityEnvelope).getData();
 	}
@@ -115,8 +115,8 @@ public class CrudClientRequest<T> {
 	 * Invokes HTTP POST method for the given input entity, modifying the request
 	 * path with the input path.
 	 */
-	public T insertWithPost(Object path, T entity) {
-		return path(path).insertWithPost(entity);
+	public T createWithPost(Object path, T entity) {
+		return path(path).createWithPost(entity);
 	}
 
 	/**
