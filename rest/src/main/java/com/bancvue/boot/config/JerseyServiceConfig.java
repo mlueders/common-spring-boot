@@ -2,6 +2,7 @@ package com.bancvue.boot.config;
 
 import com.bancvue.boot.metrics.MetricRequestFilter;
 import com.bancvue.boot.metrics.MetricsConfiguration;
+import com.bancvue.rest.client.ImmutableClient;
 import java.util.regex.Pattern;
 import javax.annotation.PostConstruct;
 import javax.ws.rs.ApplicationPath;
@@ -82,6 +83,11 @@ public class JerseyServiceConfig {
 	@Bean
 	public MetricRequestFilter metricRequestFilter() {
 		return new MetricRequestFilter();
+	}
+
+	@Bean
+	public ImmutableClient jaxrsClient() {
+		return ImmutableClient.createDefault();
 	}
 
 
