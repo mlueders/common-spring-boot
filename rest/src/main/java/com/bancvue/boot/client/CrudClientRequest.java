@@ -11,6 +11,16 @@ import java.util.List;
 import javax.ws.rs.core.Cookie;
 import javax.ws.rs.core.GenericType;
 
+/**
+ * An adapter for {@link com.bancvue.rest.client.request.ClientRequest} which encapsulates invoking a request
+ * and unwrapping the response.  It is expected that the target resource accepts and returns a single type (the
+ * target type) and that responses are wrapped in a {@link com.bancvue.rest.envelope.DefaultEnvelope}.
+ *
+ * The constructor accepts the target resource type, which is then used to construct GenericType objects used
+ * to deserialize and unwrap the response.  One limitation of this is that only simple, non-generic types are
+ * supported.  If this limitation becomes problematic, there is a second, private constructor which allows
+ * specifying the GenericType instances which will be used to deserialize the responses.
+ */
 public class CrudClientRequest<T> {
 
 	private static final GenericTypeFactory GENERIC_TYPE_FACTORY = GenericTypeFactory.getInstance();
